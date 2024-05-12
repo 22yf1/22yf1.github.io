@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>时光胶囊首页</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding-top: 50px; }
+    input, button { font-size: 1em; }
+  </style>
+</head>
+<body>
+  <h1>时光胶囊</h1>
+  <p>请输入您的取件码：</p>
+  <input type="text" id="pickupCode" maxlength="6" />
+  <button onclick="retrieveCapsule()">取回胶囊</button>
+
+  <script>
+    function retrieveCapsule() {
+      var pickupCode = document.getElementById('pickupCode').value;
+      var today = new Date();
+      var retrieveDate = new Date('2024-05-08');
+
+      // 检查是否输入了特殊的取件码
+      if (pickupCode === '820327') {
+        window.location.href = 'all-capsules.html?code=' + pickupCode;
+      } else if (today >= retrieveDate && isValidCode(pickupCode)) {
+        // 如果取件码有效且日期已到，跳转到capsule.html并传递取件码
+        window.location.href = 'capsule.html?code=' + pickupCode;
+      } else {
+        alert('取件码错误或还未到取回日期。');
+      }
+    }
+
+    function isValidCode(code) {
+      // 这里应该包含所有有效的取件码
+      var validCodes = ['123456', '234567', /* 更多取件码 */];
+      return validCodes.includes(code);
+    }
+  </script>
+</body>
+</html>

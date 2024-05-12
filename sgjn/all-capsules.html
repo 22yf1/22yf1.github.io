@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>所有时光胶囊</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: url('generated-background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #000; /* 黑色文本 */
+    }
+    .capsule-module {
+      background: rgba(255, 255, 255, 0.8); /* 背景白色半透明 */
+      backdrop-filter: blur(10px); /* 高斯模糊效果 */
+      border-radius: 15px; /* 圆角矩形 */
+      padding: 20px;
+      margin-bottom: 20px; /* 模块间距 */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+    }
+    .capsule-code {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    /* ... 其他样式 ... */
+  </style>
+</head>
+<body>
+  <h1>所有时光胶囊</h1>
+  <div id="capsulesContainer"></div>
+
+  <script>
+    // 存储所有胶囊的信息
+    var capsules = {
+      '123456': {
+        text: '<h2>标题</h2><p>这是您的第一个时光胶囊文字内容。</p>',
+        img: 'image-url-1.jpg',
+        note: '这是第一个胶囊的备注。'
+      },
+      '234567': {
+        text: '<h2>标题</h2><p>这是您的第二个时光胶囊文字内容。</p>',
+        img: 'image-url-2.jpg',
+        note: '这是第二个胶囊的备注。'
+      },
+      // ... 添加更多胶囊内容和备注 ...
+    };
+
+    // 当页面加载完成时，展示所有胶囊
+    window.onload = function() {
+      displayAllCapsules();
+    };
+
+    function displayAllCapsules() {
+      var container = document.getElementById('capsulesContainer');
+      for (var code in capsules) {
+        if (capsules.hasOwnProperty(code)) {
+          var capsule = capsules[code];
+          var moduleElement = document.createElement('div');
+          moduleElement.className = 'capsule-module';
+          moduleElement.innerHTML = '<div class="capsule-code">取件码: ' + code + '</div>' + capsule.text + (capsule.img ? '<img src="' + capsule.img + '" alt="时光胶囊图片" style="max-width:100%;height:auto;">' : '') + '<p>备注：' + capsule.note + '</p>';
+          container.appendChild(moduleElement);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
