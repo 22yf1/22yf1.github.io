@@ -53,25 +53,23 @@
         },
         'CSL0511': {
           text: '三年后的崔思璐你好，我想问问你的身边还是他吗？你毕业了吗？你找到好工作了吗？在这里我想祝你平平安安，快快乐乐，自由自在，身边一直有他，相同祝他平平安安，事业有成，一直在我的身边，祝，妈，爸，家人，平平安安。3年后你长好看了吗？成熟了吗？',
-          img: 'image/csl01.jpg',
-          img: 'image/csl02.jpg',
-          img: 'image/csl03.jpg'
+          img: ['image/csl01.jpg', 'image/csl02.jpg', 'image/csl03.jpg']
         },
         // 添加更多胶囊内容
       };
 
-      var capsule = capsules[code];
-      if (capsule) {
-        document.getElementById('textContent').innerHTML = capsule.text;
-        if (capsule.img) {
-          var imageElement = document.getElementById('imageContent');
-          imageElement.src = capsule.img;
-          imageElement.style.display = 'block';
-        }
-      } else {
-        document.getElementById('textContent').textContent = '无效的取件码或尚未到取回日期。';
-      }
+        var capsule = capsules[code];
+  if (capsule) {
+    document.getElementById('textContent').innerHTML = capsule.text;
+    if (capsule.img && capsule.img.length) {
+      capsule.img.forEach(function(imageSrc) {
+        var imageElement = document.createElement('img');
+        imageElement.src = imageSrc;
+        imageElement.classList.add('capsule-image');
+        document.querySelector('.capsule-container').appendChild(imageElement);
+      });
     }
-  </script>
-</body>
-</html>
+  } else {
+    document.getElementById('textContent').textContent = '无效的取件码或尚未到取回日期。';
+  }
+}
