@@ -13,14 +13,14 @@
       background-size: cover;
     }
     .capsule-container {
-      background: rgba(255, 255, 255, 0.8); /* 背景白色半透明 */
-      backdrop-filter: blur(10px); /* 高斯模糊效果 */
-      border-radius: 15px; /* 圆角矩形 */
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
       padding: 20px;
       margin: auto;
-      margin-top: 20px; /* 在胶囊内容上方留出空间 */
+      margin-top: 20px;
       max-width: 600px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .capsule-text {
       margin-bottom: 20px;
@@ -28,14 +28,16 @@
     .capsule-image {
       max-width: 100%;
       height: auto;
-      border-radius: 10px; /* 图片圆角 */
+      border-radius: 10px;
+      display: block; /* 确保图片默认显示 */
+      margin-top: 10px; /* 图片间隔 */
     }
   </style>
 </head>
 <body>
   <div class="capsule-container">
     <div class="capsule-text" id="textContent"></div>
-    <img class="capsule-image" id="imageContent" src="" alt="时光胶囊图片" style="display:none;">
+    <!-- 移除了id="imageContent"的img元素，因为我们将动态创建它们 -->
   </div>
   <script>
     window.onload = function() {
@@ -45,11 +47,10 @@
     };
 
     function displayCapsuleContent(code) {
-      // 这里应该根据取件码来设置对应的胶囊内容
       var capsules = {
         '123456': {
           text: '这是您的时光胶囊文字内容。',
-          img: 'image/sgjn01.png'
+          img: ['image/sgjn01.png']
         },
         'CSL0511': {
           text: '三年后的崔思璐你好，我想问问你的身边还是他吗？你毕业了吗？你找到好工作了吗？在这里我想祝你平平安安，快快乐乐，自由自在，身边一直有他，相同祝他平平安安，事业有成，一直在我的身边，祝，妈，爸，家人，平平安安。3年后你长好看了吗？成熟了吗？',
@@ -58,18 +59,20 @@
         // 添加更多胶囊内容
       };
 
-        var capsule = capsules[code];
-  if (capsule) {
-    document.getElementById('textContent').innerHTML = capsule.text;
-    if (capsule.img && capsule.img.length) {
-      capsule.img.forEach(function(imageSrc) {
-        var imageElement = document.createElement('img');
-        imageElement.src = imageSrc;
-        imageElement.classList.add('capsule-image');
-        document.querySelector('.capsule-container').appendChild(imageElement);
-      });
+      var capsule = capsules[code];
+      if (capsule) {
+        document.getElementById('textContent').innerHTML = capsule.text;
+        var container = document.querySelector('.capsule-container');
+        capsule.img.forEach(function(imageSrc) {
+          var imageElement = document.createElement('img');
+          imageElement.src = imageSrc;
+          imageElement.classList.add('capsule-image');
+          container.appendChild(imageElement);
+        });
+      } else {
+        document.getElementById('textContent').textContent = '无效的取件码或尚未到取回日期。';
+      }
     }
-  } else {
-    document.getElementById('textContent').textContent = '无效的取件码或尚未到取回日期。';
-  }
-}
+  </script>
+</body>
+</html>
