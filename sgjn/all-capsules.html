@@ -25,6 +25,11 @@
       font-weight: bold;
       margin-bottom: 10px;
     }
+    .capsule-image {
+      max-width: 100%;
+      height: auto;
+      margin-top: 10px; /* 图片间隔 */
+    }
     /* ... 其他样式 ... */
   </style>
 </head>
@@ -34,19 +39,24 @@
 
   <script>
     // 存储所有胶囊的信息
-    var capsules = {
-      '123456': {
-        text: '<h2>标题</h2><p>这是您的第一个时光胶囊文字内容。</p>',
-        img: 'image/sgjn01.png',
-        note: '这是第一个胶囊的备注。'
-      },
-      '234567': {
-        text: '<h2>标题</h2><p>这是您的第二个时光胶囊文字内容。</p>',
-        img: 'image/sgjn01.png',
-        note: '这是第二个胶囊的备注。'
-      },
-      // ... 添加更多胶囊内容和备注 ...
-    };
+
+      var capsules = {
+        '123456': {
+          text: '这是您的时光胶囊文字内容。',
+          img: ['image/sgjn01.png']
+        },
+        'CSL0511': {
+          text: '三年后的崔思璐你好，我想问问你的身边还是他吗？你毕业了吗？你找到好工作了吗？在这里我想祝你平平安安，快快乐乐，自由自在，身边一直有他，相同祝他平平安安，事业有成，一直在我的身边，祝，妈，爸，家人，平平安安。3年后你长好看了吗？成熟了吗？',
+          img: ['image/csl01.jpg', 'image/csl02.jpg', 'image/csl03.jpg']
+          note: '崔思璐'
+        },
+       '198312': {
+          text: '对三年后的我：越来越好，挣好多好多的钱💴，看他们的演唱会，旅行，字好看点,舞蹈，吉他，钢琴，滑板都好一点',
+          img: ['image/yjm01.jpg']
+          note: '苑静美'
+         },
+      };
+ 
 
     // 当页面加载完成时，展示所有胶囊
     window.onload = function() {
@@ -60,7 +70,20 @@
           var capsule = capsules[code];
           var moduleElement = document.createElement('div');
           moduleElement.className = 'capsule-module';
-          moduleElement.innerHTML = '<div class="capsule-code">取件码: ' + code + '</div>' + capsule.text + (capsule.img ? '<img src="' + capsule.img + '" alt="时光胶囊图片" style="max-width:100%;height:auto;">' : '') + '<p>备注：' + capsule.note + '</p>';
+          moduleElement.innerHTML = '<div class="capsule-code">取件码: ' + code + '</div>' + capsule.text;
+          
+          // 检查是否有图片并创建img元素
+          if (capsule.img && capsule.img.length) {
+            capsule.img.forEach(function(imageSrc) {
+              var imageElement = document.createElement('img');
+              imageElement.src = imageSrc;
+              imageElement.alt = '时光胶囊图片';
+              imageElement.className = 'capsule-image';
+              moduleElement.appendChild(imageElement);
+            });
+          }
+
+          moduleElement.innerHTML += '<p>备注：' + capsule.note + '</p>';
           container.appendChild(moduleElement);
         }
       }
