@@ -19,7 +19,7 @@
     function retrieveCapsule() {
       var pickupCode = document.getElementById('pickupCode').value;
       var today = new Date();
-      var retrieveDate = new Date('2024-05-08');
+      var retrieveDate = new Date('2027-05-08');
 
       // 检查是否输入了特殊的取件码
       if (pickupCode === '820327') {
@@ -28,7 +28,7 @@
         // 如果取件码有效且日期已到，跳转到capsule.html并传递取件码
         window.location.href = 'capsule.html?code=' + pickupCode;
       } else {
-        alert('取件码错误或还未到取回日期。');
+        alert('还未到取回日期。');
       }
     }
  function isValidCode(code) {
