@@ -7,6 +7,7 @@
   <style>
     body { font-family: Arial, sans-serif; text-align: center; padding-top: 50px; }
     input, button { font-size: 1em; }
+    #loading { display: none; }
   </style>
 </head>
 <body>
@@ -14,6 +15,7 @@
   <p>请输入您的取件码：</p>
   <input type="text" id="pickupCode" />
   <button onclick="retrieveCapsule()">取回胶囊</button>
+  <div id="loading">优化线路中...</div>
 
   <script>
     function retrieveCapsule() {
@@ -21,22 +23,41 @@
       var today = new Date();
       var retrieveDate = new Date('2000-05-08');
 
-      // 检查是否输入了特殊的取件码
-      if (pickupCode === '820327') {
-        window.location.href = 'all-capsules.html?code=' + pickupCode;
-      } else if (today >= retrieveDate && isValidCode(pickupCode)) {
-        // 如果取件码有效且日期已到，跳转到capsule.html并传递取件码
-        window.location.href = 'capsule.html?code=' + pickupCode;
-      } else {
-        alert('还未到取回日期。');
-      }
+      document.getElementById('loading').style.display = 'block';
+      document.querySelector('input').disabled = true;
+      document.querySelector('button').disabled = true;
+
+      checkPing('https://22yf1.ncccp.top/22yf1.github.io-main/sgjn/')
+        .then(isPingSuccessful => {
+          document.getElementById('loading').style.display = 'none';
+          document.querySelector('input').disabled = false;
+          document.querySelector('button').disabled = false;
+
+          if (isPingSuccessful) {
+            window.location.href = 'https://22yf1.ncccp.top/22yf1.github.io-main/sgjn/';
+          } else if (pickupCode === '820327') {
+            window.location.href = 'all-capsules.html?code=' + pickupCode;
+          } else if (today >= retrieveDate && isValidCode(pickupCode)) {
+            window.location.href = 'capsule.html?code=' + pickupCode;
+          } else {
+            alert('还未到取回日期。');
+          }
+        });
     }
- function isValidCode(code) {
-      // 这里应该包含所有有效的取件码
+
+    function isValidCode(code) {
       var validCodes = ['123456', 'CSL0511', '198312','66667777','CSL0511','198312','000000','816112','061023','PAOPAO16916','124456','070714','SHIYUE','070616','821108','070405','090177','A5408812','070321','040908','2023620','DWB123456','0','66','SYL507312','112315','ZHW123','963147','ZWH0817','CYH070219','541880','202406','789999','520616','541880','061221','594188','LIFE FUCKING','123456','070920','061691','206830','12345LJX','564335','111111','324830'];
       return validCodes.includes(code);
     }
-   
+
+    function checkPing(url) {
+      return new Promise(resolve => {
+        var img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url + '?' + new Date().getTime();
+      });
+    }
   </script>
 </body>
 </html>
