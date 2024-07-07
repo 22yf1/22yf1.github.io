@@ -51,12 +51,9 @@
     }
 
     function checkPing(url) {
-      return new Promise(resolve => {
-        var img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
-        img.src = url + '?' + new Date().getTime();
-      });
+      return fetch(url, { mode: 'no-cors' })
+        .then(response => true)
+        .catch(error => false);
     }
   </script>
 </body>
