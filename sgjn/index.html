@@ -17,8 +17,8 @@
       z-index: 1000; /* 确保在最上层 */
     }
     #loading img {
-      width: 300px; /* 根据需要调整大小 */
-      height: 300px;
+      width: 400px; /* 根据需要调整大小 */
+      height: 400px;
     }
     #overlay {
       position: fixed;
@@ -41,7 +41,7 @@
   <!-- 加载动画 -->
   <div id="overlay"></div>
   <div id="loading">
-    <img src="image/loading.gif" alt="正在优化线路">
+    <img src="images/loading.gif" alt="正在优化线路">
     <div id="loadingText">正在优化线路中.</div>
   </div>
 
@@ -96,27 +96,24 @@
     function determineFastest() {
       const currentUrl = window.location.href;
       const testUrls = [
-        { url: "https://22yf1.github.io/sgjn/image/testfile.txt", page: "https://22yf1.github.io/sgjn/index.html" },
-        { url: "https://22yf1.ncccp.top/22yf1.github.io-main/sgjn/image/testfile.txt", page: "https://22yf1.ncccp.top/22yf1.github.io-main/sgjn/index.html" },
-        { url: "https://bj.ncccp.top/sgjn/testfile.txt", page: "https://bj.ncccp.top/sgjn/index.html" }
+        { url: "https://22yf1.github.io/sgjn/image/yjm01.jpg", page: "https://22yf1.github.io/sgjn/index.html" },
+        { url: "https://22yf1.ncccp.top/22yf1.github.io-main/sgjn/image/yjm01.jpg", page: "https://22yf1.ncccp.top/22yf1.github.io-main/sgjn/index.html" },
+        { url: "https://bj.ncccp.top/sgjn/image/yjm01.jpg", page: "https://bj.ncccp.top/sgjn/index.html" }
       ];
 
-      const results = [];
-      
+      let fastestUrlDetermined = false;
+
       testUrls.forEach(test => {
         testSpeed(test.url, (speed, testUrl) => {
-          results.push({ speed, url: test.page });
-          
-          // 当所有测速结果返回时
-          if (results.length === testUrls.length) {
-            results.sort((a, b) => b.speed - a.speed); // 按速度降序排列
-            const fastestUrl = results[0].url;
+          if (!fastestUrlDetermined) {
+            fastestUrlDetermined = true;
+            const fastestUrl = test.page;
 
-            // 如果最快的网站是 GitHub Pages，则隐藏动画并结束逻辑
-            if (fastestUrl === "https://22yf1.github.io/sgjn/index.html") {
+            // 如果最快的网站是当前访问的网站，则隐藏动画并结束逻辑
+            if (fastestUrl === currentUrl) {
               document.getElementById('overlay').style.display = 'none';
               document.getElementById('loading').style.display = 'none';
-            } else if (fastestUrl !== currentUrl) {
+            } else {
               // 如果当前页面不是最快的，进行重定向
               window.location.href = fastestUrl;
             }
