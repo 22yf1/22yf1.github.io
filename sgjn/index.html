@@ -64,22 +64,30 @@
     }
 
     function determineFastest() {
-      const urls = [
-        "https://22yf1.github.io/sgjn/testfile.txt",
-        "https://22yf1.ncccp.top/22yf1.github.io-main/sgjn/testfile.txt",
-        "https://bj.ncccp.top/sgjn/testfile.txt"
+      const currentUrl = window.location.href;
+      const testUrls = [
+        { url: "https://22yf1.github.io/sgjn/testfile.txt", page: "https://22yf1.github.io/sgjn/index.html" },
+        { url: "https://22yf1.ncccp.top/22yf1.github.io-main/sgjn/testfile.txt", page: "https://22yf1.ncccp.top/22yf1.github.io-main/sgjn/index.html" },
+        { url: "https://bj.ncccp.top/sgjn/testfile.txt", page: "https://bj.ncccp.top/sgjn/index.html" }
       ];
       
+      // 如果当前页面是 GitHub Pages，不进行测速或重定向
+      if (currentUrl === "https://22yf1.github.io/sgjn/index.html") {
+        return;
+      }
+
       const results = [];
       
-      urls.forEach(url => {
-        testSpeed(url, (speed, testUrl) => {
-          results.push({ speed, url: testUrl });
+      testUrls.forEach(test => {
+        testSpeed(test.url, (speed, testUrl) => {
+          results.push({ speed, url: test.page });
           
-          if (results.length === urls.length) {
+          if (results.length === testUrls.length) {
             results.sort((a, b) => b.speed - a.speed); // Sort by speed descending
             const fastestUrl = results[0].url;
-            window.location.href = fastestUrl.replace('/testfile.txt', '/index.html');
+            if (fastestUrl !== currentUrl) {
+              window.location.href = fastestUrl;
+            }
           }
         });
       });
