@@ -7,6 +7,29 @@
   <style>
     body { font-family: Arial, sans-serif; text-align: center; padding-top: 50px; }
     input, button { font-size: 1em; }
+    #loading {
+      display: none; /* 默认隐藏 */
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 1000; /* 确保在最上层 */
+    }
+    #loading img {
+      width: 100px; /* 根据需要调整大小 */
+      height: 100px;
+    }
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+      z-index: 999; /* 确保在最上层 */
+      display: none; /* 默认隐藏 */
+    }
   </style>
 </head>
 <body>
@@ -14,6 +37,13 @@
   <p>请输入您的取件码：</p>
   <input type="text" id="pickupCode" />
   <button onclick="retrieveCapsule()">取回胶囊</button>
+
+  <!-- 加载动画 -->
+  <div id="overlay"></div>
+  <div id="loading">
+    <img src="image/loading.gif" alt="正在优化线路">
+    <div id="loadingText">正在优化线路中.</div>
+  </div>
 
   <script>
     function retrieveCapsule() {
@@ -73,6 +103,9 @@
       
       // 如果当前页面是 GitHub Pages，不进行测速或重定向
       if (currentUrl === "https://22yf1.github.io/sgjn/index.html") {
+        // 隐藏加载动画
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('loading').style.display = 'none';
         return;
       }
 
@@ -87,14 +120,30 @@
             const fastestUrl = results[0].url;
             if (fastestUrl !== currentUrl) {
               window.location.href = fastestUrl;
+            } else {
+              // 隐藏加载动画
+              document.getElementById('overlay').style.display = 'none';
+              document.getElementById('loading').style.display = 'none';
             }
           }
         });
       });
     }
 
+    function showLoadingAnimation() {
+      const loadingText = document.getElementById('loadingText');
+      let dots = 0;
+      setInterval(() => {
+        dots = (dots + 1) % 4;
+        loadingText.textContent = '正在优化线路中' + '.'.repeat(dots);
+      }, 500);
+    }
+
     // 开始测速并重定向
     window.onload = function() {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('loading').style.display = 'block';
+      showLoadingAnimation();
       determineFastest();
     };
   </script>
