@@ -77,9 +77,9 @@
       xhr.onload = function() {
         if (xhr.status === 200) {
           const endTime = new Date().getTime();
-          const duration = (endTime - startTime) / 1000; // Time in seconds
-          const size = xhr.response.size / 1024 / 1024; // Size in MB
-          const speed = size / duration; // Speed in MBps
+          const duration = (endTime - startTime) / 1000; // 时间（秒）
+          const size = xhr.response.size / 1024 / 1024; // 大小（MB）
+          const speed = size / duration; // 速度（MBps）
           callback(speed, url);
         } else {
           callback(null, url);
@@ -100,14 +100,6 @@
         { url: "https://22yf1.ncccp.top/22yf1.github.io-main/sgjn/testfile.txt", page: "https://22yf1.ncccp.top/22yf1.github.io-main/sgjn/index.html" },
         { url: "https://bj.ncccp.top/sgjn/testfile.txt", page: "https://bj.ncccp.top/sgjn/index.html" }
       ];
-      
-      // 如果当前页面是 GitHub Pages，不进行测速或重定向
-      if (currentUrl === "https://22yf1.github.io/sgjn/index.html") {
-        // 隐藏加载动画
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('loading').style.display = 'none';
-        return;
-      }
 
       const results = [];
       
@@ -115,15 +107,18 @@
         testSpeed(test.url, (speed, testUrl) => {
           results.push({ speed, url: test.page });
           
+          // 当所有测速结果返回时
           if (results.length === testUrls.length) {
-            results.sort((a, b) => b.speed - a.speed); // Sort by speed descending
+            results.sort((a, b) => b.speed - a.speed); // 按速度降序排列
             const fastestUrl = results[0].url;
-            if (fastestUrl !== currentUrl) {
-              window.location.href = fastestUrl;
-            } else {
-              // 隐藏加载动画
+
+            // 如果最快的网站是 GitHub Pages，则隐藏动画并结束逻辑
+            if (fastestUrl === "https://22yf1.github.io/sgjn/index.html") {
               document.getElementById('overlay').style.display = 'none';
               document.getElementById('loading').style.display = 'none';
+            } else if (fastestUrl !== currentUrl) {
+              // 如果当前页面不是最快的，进行重定向
+              window.location.href = fastestUrl;
             }
           }
         });
